@@ -24,6 +24,11 @@ variable "database_engine" {
   type        = string
 }
 
+variable "database_engine_version" {
+  description = "Database engine version e.g 0.0.0"
+  type = string
+}
+
 variable "multi_az_deployment" {
   description = "Enable Multi-AZ deployment"
   type        = bool
