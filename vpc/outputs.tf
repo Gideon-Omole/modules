@@ -60,12 +60,12 @@ output "private_data_subnet_az2_id" {
   value       = aws_subnet.private_data_subnet_az2.id
 }
 
-output "availabiity_zone_1" {
+output "availability_zone_1" {
   description = "The first availability zone"
   value       = data.aws_availability_zones.available_zones.names[0]
 }
 
-output "availabiity_zone_2" {
+output "availability_zone_2" {
   description = "The second availability zone"
   value       = data.aws_availability_zones.available_zones.names[1]
 }
