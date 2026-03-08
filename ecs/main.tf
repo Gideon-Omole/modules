@@ -53,6 +53,18 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         }
       ]
 
+      # Runtime DB connection info
+      environment = [
+        { name = "DB_HOST", value = module.rds.rds_endpoint },
+        { name = "DB_NAME", value = module.secrets_manager.rds_db_name },
+        { name = "DB_USER", value = module.secrets_manager.rds_db_username }
+      ]
+
+      secrets = [
+        { name = "DB_PASS", valueFrom = module.secrets_manager.rds_db_password_arn }
+      ]
+
+
       logConfiguration = {
         logDriver = "awslogs"
         options = {
