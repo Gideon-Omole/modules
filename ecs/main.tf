@@ -1,3 +1,13 @@
+locals {
+  container_variables = [for variableName in keys(var.container_variables) : {
+    name  = variableName
+    value = lookup(var.container_variables, variableName)
+    }
+  ]
+
+  secret_arns = [for secret in var.container_secrets : secret.valueFrom]
+}
+
 # ECS Cluster 
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.environment}-${var.project_name}-cluster"
@@ -54,17 +64,10 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       ]
 
       # Runtime DB connection info
-      environment = [
-        { name = "DB_HOST", value = module.rds.rds_endpoint },
-        { name = "DB_NAME", value = module.secrets_manager.rds_db_name },
-        { name = "DB_USER", value = module.secrets_manager.rds_db_username }
-      ]
+      environment = local.container_variables
 
-      secrets = [
-        { name = "DB_PASS", valueFrom = module.secrets_manager.rds_db_password_arn }
-      ]
-
-
+      secrets = var.container_secrets
+        
       logConfiguration = {
         logDriver = "awslogs"
         options = {

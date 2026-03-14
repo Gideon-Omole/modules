@@ -53,3 +53,15 @@ variable "alb_target_group_arn" {
   description = "The ARN of the ALB target group"
   type        = string
 }
+
+variable "container_variables" {
+  description = "The container environment variables"
+  type        = map(string)
+  default     = {}
+}
+
+variable "container_secrets" {
+  description = "The container secret environmnent variables"
+  type        = list(map(string))
+  default     = []
+}
